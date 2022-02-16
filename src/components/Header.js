@@ -17,6 +17,10 @@ function Header(props) {
 
 	const searchDict = () => {
 		const title = searchTitle.current.value;
+
+		if (window.location.pathname !== "/") {
+			return;
+		}
 	
 		if (title.length === 0) {
 			dispatch(loadDictionaryFB());
