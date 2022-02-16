@@ -42,7 +42,7 @@ function Dictionary(props) {
 								<p className='item--title'>{d.title}</p>
 								<p className='item--desc'>{d.desc}</p>
 								<span className='item--example'>
-									{d.example}
+									"{d.example}"
 								</span>
 								<RemoveButton onClick={() => {
 									dispatch(removeDictionaryFB(d.id));
@@ -57,7 +57,6 @@ function Dictionary(props) {
 						<PlusButton
 							onClick={() => {
 								navigate("/new");
-								window.location.reload();
 						}}>
 						+
 						</PlusButton>

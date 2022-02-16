@@ -63,7 +63,6 @@ function NewDictionary(props) {
 					rot={false}
 					onClick={() => {
 						navigate("/");
-						window.location.reload();
 					}}>
 					«
 				</UpButton>

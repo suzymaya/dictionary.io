@@ -18,6 +18,7 @@ function App() {
 
 	React.useEffect(() => {
 		dispatch(loadDictionaryFB());
+		console.log("render");
 	}, []);
 
 	return (
