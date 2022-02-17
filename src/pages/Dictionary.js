@@ -11,7 +11,7 @@ import {
 	UpButton,
 	RemoveButton
 } from "../styles/elements.js";
-import { removeDictionaryFB } from "../redux/modules/dictionary.js";
+import { loadDictionaryFB, removeDictionaryFB } from "../redux/modules/dictionary.js";
 
 function Dictionary(props) {
 	const navigate = useNavigate();
@@ -19,6 +19,10 @@ function Dictionary(props) {
 
 	const listRef = React.useRef(null);
 	const myDict = useSelector((state) => state.dict.list);
+
+	React.useEffect(() => {
+		dispatch(loadDictionaryFB());
+	}, [myDict]);
 
 	const scrollUp = () => {
 		listRef.current.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -39,7 +43,9 @@ function Dictionary(props) {
 					{myDict.map((d, index) => {
 						return (
 							<DictItem key={index}>
-								<p className='item--title'>{d.title}</p>
+								<Link to = {"/detail/"+index}>
+									<p className='item--title'>{d.title}</p>
+								</Link>
 								<p className='item--desc'>{d.desc}</p>
 								<span className='item--example'>
 									"{d.example}"

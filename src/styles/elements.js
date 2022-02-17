@@ -8,7 +8,7 @@ const MOBILE_LANDSCAPE_WIDTH = 812; //  iPhone X landscape 기준
  */
 export const Wrapper = styled.div`
 	@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
-	@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+	@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap");
 
 	position: absolute;
 	display: flex;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
 
 	background-color: #eee;
 
-	font-family: 'Ubuntu', 'Nanum Gothic', sans-serif;
+	font-family: "Ubuntu", "Nanum Gothic", sans-serif;
 	font-size: 16px;
 
 	overflow-x: hidden;
@@ -55,13 +55,13 @@ export const HeaderContainer = styled.div`
 	}
 `;
 
-/**  
+/**
  * Components
-*/
+ */
 
 export const Title = styled.span`
 	margin-left: 15px;
-	
+
 	font-size: 24px;
 	color: #000;
 	font-weight: 800;
@@ -116,9 +116,9 @@ export const DictItem = styled.div`
 
 		font-weight: bold;
 		text-align: center;
-		color: #4131A0;
+		color: #4131a0;
 
-		background-color: #D2CDF0;
+		background-color: #d2cdf0;
 	}
 `;
 
@@ -148,7 +148,8 @@ const spinDown = keyframes`
 // button components
 export const ButtonGroup = styled.div`
 	position: absolute;
-	bottom: 3%; right: 3%;
+	bottom: 3%;
+	right: 3%;
 	margin: auto;
 
 	display: inline-flex;
@@ -251,23 +252,24 @@ export const PlusButton = styled.div`
 	}
 
 	@media only screen and (max-width: ${MOBILE_LANDSCAPE_WIDTH}px) {
-		${(props) => props.center
-			? css`
-				height: 120px;
-				width: 120px;
-				border-radius: 120px;
+		${(props) =>
+			props.center
+				? css`
+						height: 120px;
+						width: 120px;
+						border-radius: 120px;
 
-				font-size: 120px;
-				line-height: 100px;
-			` 
-			: css`
-				height: 50px;
-				width: 50px;
-				border-radius: 50px;
+						font-size: 120px;
+						line-height: 100px;
+				  `
+				: css`
+						height: 50px;
+						width: 50px;
+						border-radius: 50px;
 
-				font-size: 50px;
-				line-height: 42px;
-			`}
+						font-size: 50px;
+						line-height: 42px;
+				  `}
 	}
 `;
 
@@ -304,7 +306,7 @@ export const RemoveButton = styled.div`
 
 export const Search = styled.input`
 	float: right;
-	
+
 	width: 25%;
 	height: 24px;
 	padding: 3px 10px 3px 10px;
@@ -337,6 +339,43 @@ export const InputItem = styled.div`
 
 	& .label {
 		font-size: 20px;
+		font-weight: 800;
+		color: slateblue;
+	}
+
+	& input {
+		padding: 3px 0px 3px 0px;
+
+		width: 100%;
+		height: 30px;
+
+		border: none;
+		border-radius: 0;
+		border-bottom: 1px solid #333;
+
+		font-size: 20px;
+	}
+
+	& input:focus {
+		outline: none;
+		border-bottom: 1px solid slateblue;
+
+		transition: all 1s ease-in;
+	}
+`;
+
+export const DetailItem = styled.div`
+	padding: 0px 15px 15px 15px;
+
+	width: 100%;
+	height: auto;
+
+	text-align: left;
+	box-sizing: border-box;
+	font-size: 20px;
+
+	& h3 {
+		font-size: 50px;
 		font-weight: 800;
 		color: slateblue;
 	}

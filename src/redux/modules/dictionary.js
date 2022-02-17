@@ -5,9 +5,10 @@ import {
 	getDoc,
 	getDocs,
 	addDoc,
+	updateDoc,
 	deleteDoc,
 	query,
-	where
+	where,
 } from "firebase/firestore";
 
 // Initial State
@@ -16,14 +17,15 @@ const initialState = {
 };
 
 // Actions
-const LOAD = "dict/LOAD";
+const LOAD_DICT = "dict/LOAD_DICT";
 const SEARCH = "dict/SEARCH";
 const CREATE = "dict/CREATE";
+const UPDATE = "dict/UPDATE";
 const REMOVE = "dict/REMOVE";
 
 // Action Creators
 export function loadDictionary(dictionary) {
-	return { type: LOAD, dictionary };
+	return { type: LOAD_DICT, dictionary };
 }
 
 export function searchDictionary(title) {
@@ -34,8 +36,12 @@ export function createDictionary(id, title, desc, example) {
 	return { type: CREATE, id, title, desc, example };
 }
 
+export function updateDictionary(index, desc, example) {
+	return { type: UPDATE, index, desc, example };
+}
+
 export function removeDictionary(index) {
-	return {type: REMOVE, index};
+	return { type: REMOVE, index };
 }
 
 // Middlewares
@@ -53,7 +59,10 @@ export const loadDictionaryFB = () => {
 
 export const searchDictionaryFB = (searchTitle) => {
 	return async function (dispatch) {
-		const q = query(collection(db, "dictionary"), where("title","==",searchTitle));
+		const q = query(
+			collection(db, "dictionary"),
+			where("title", "==", searchTitle)
+		);
 		const data = await getDocs(q);
 		let dictionary = [];
 		data.forEach((d) => {
@@ -62,19 +71,39 @@ export const searchDictionaryFB = (searchTitle) => {
 
 		dispatch(loadDictionary(dictionary));
 	};
-}
+};
 
 export const createDictionaryFB = (item) => {
 	return async function (dispatch) {
 		const docRef = await addDoc(collection(db, "dictionary"), item);
 		// console.log((await getDoc(docRef)).data());
 		const _item = await getDoc(docRef);
-        dispatch(createDictionary(_item.id, _item.data().title, _item.data().desc, _item.data().example));
+		dispatch(
+			createDictionary(
+				_item.id,
+				_item.data().title,
+				_item.data().desc,
+				_item.data().example
+			)
+		);
+	};
+};
+
+export const updateDictionaryFB = (id, desc, example) => {
+	return async function(dispatch, getState) {
+		const docRef = doc(db, "dictionary", id);
+		await updateDoc(docRef, {desc: desc, example: example});
+
+		const _dict = getState().dict.list;
+		const dict_index = _dict.findIndex((d) => {
+			return d.id === id;
+		});
+		dispatch(updateDictionary(dict_index, desc, example));
 	};
 };
 
 export const removeDictionaryFB = (id) => {
-	return async function(dispatch, getState) {
+	return async function (dispatch, getState) {
 		if (!id) {
 			window.alert("항목이 존재하지 않습니다");
 			return;
@@ -89,13 +118,13 @@ export const removeDictionaryFB = (id) => {
 		});
 
 		dispatch(removeDictionary(index));
-	}
+	};
 };
 
 // Reducer
 export default function reducer(state = initialState, action = {}) {
 	switch (action.type) {
-		case "dict/LOAD":
+		case "dict/LOAD_DICT":
 			return { list: action.dictionary };
 		case "dict/CREATE":
 			const newDict = {
@@ -105,11 +134,20 @@ export default function reducer(state = initialState, action = {}) {
 				example: action.example,
 			};
 			return { list: [...state.list, newDict] };
+		case "dict/UPDATE":
+			const updatedDict = state.list.map((d, idx) => {
+				if (parseInt(action.index) === idx) {
+					return {...d, desc: action.desc, example: action.example}
+				} else {
+					return d;
+				}
+			});
+			return {list: updatedDict};
 		case "dict/REMOVE":
-			const new_dict = state.list.filter((l, idx) => {
+			const removedDict = state.list.filter((l, idx) => {
 				return parseInt(action.index) !== idx;
 			});
-			return {list: new_dict};
+			return { list: removedDict };
 		default:
 			return state;
 	}
