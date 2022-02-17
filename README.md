@@ -8,6 +8,7 @@
 - Show dictionary items
 - Create dictionary items
 - Search dictionary items
+- Update dictionary items
 - Remove individual dictionary item
 
 ### View
